@@ -1,29 +1,55 @@
-var alphacapital = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-var divFalling = document.querySelectorAll('.div__falling');
-var innerSpan = document.querySelectorAll('.div__falling span');
+var alphacapital = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+];
+var divFalling = document.querySelectorAll(".div__falling");
+var innerSpan = document.querySelectorAll(".div__falling span");
 
+var alphabetCharacter;
+var alphabet;
 
+function characterCode(event) {
+  alphabetCharacter = String.fromCharCode(event.charCode);
+  clearInterval(hasToBeClear);
 
-function randomFalling() {
-    setInterval(function () {
+  if (alphabet === alphabetCharacter) {
+    innerSpan[coloumntobeshown].style.cssText = "transition:none;bottom:100%;";
+    hasToBeClear = setInterval(mainFunc, 3000);
+    randomNumberFunction();
 
-        var randomNumber = Math.floor(Math.random() * 26);
-        var alphabet = alphacapital[randomNumber].toLowerCase()
-
-        var randomContainerNum = Math.floor(Math.random() * 5)
-
-        for (var i = 0; i < divFalling.length; i++) {
-
-            if (randomContainerNum === i) {
-                for (var j = 0; j < innerSpan.length; j++) {
-                    innerSpan[j].innerHTML = ''
-                    
-                }
-                innerSpan[i].innerHTML = alphabet
-            }
-
-
-        }
-        }, 1499)
+  } else if (coloumntobeshown < 10) {
+    innerSpan[coloumntobeshown].style.cssText ="transition:none;bottom:0px;color:red;";
+    coloumntobeshown++;
+    randomNumberFunction();
+    hasToBeClear = setInterval(mainFunc, 3000);
+  }
 }
-randomFalling();
+
+var coloumntobeshown = 0;
+
+function randomNumberFunction() {
+  var randomNumber = Math.floor(Math.random() * alphacapital.length);
+  alphabet = alphacapital[randomNumber].toLowerCase();
+
+  if (coloumntobeshown < 10) {
+    innerSpan[coloumntobeshown].innerHTML = alphabet;
+    setTimeout(function () {
+      innerSpan[coloumntobeshown].style.cssText = "bottom:0px;transition:bottom 3s linear;";
+    }, 20);
+  }
+}
+randomNumberFunction();
+
+var mainFunc = function () {
+  if (coloumntobeshown > 9) {
+    clearInterval(hasToBeClear);
+  }
+    if (alphabet !== alphabetCharacter) {
+      innerSpan[coloumntobeshown].style.bottom = "0px";
+      innerSpan[coloumntobeshown].style.color = "red";
+
+      coloumntobeshown++;
+      randomNumberFunction();
+      alphabetCharacter = undefined;
+    }
+};
+
+var hasToBeClear = setInterval(mainFunc, 3000);
